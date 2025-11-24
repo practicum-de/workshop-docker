@@ -16,24 +16,24 @@ Docker — программное обеспечение для автомати
 Для примера возьмем postgres
 
 ```
-docker run postgres
+docker run postgres:17
 ```
 Докер автоматически загрузит образ из https://hub.docker.com/
 
 В терминале видим ошибку - не хватает переменной окружения. Сразу же дается подсказка, как добавить переменную окружения с помощью ключа -e
 ```
-docker run -e POSTGRES_PASSWORD=password postgres
+docker run -e POSTGRES_PASSWORD=password postgres:17
 ```
 
 В терминал выводятся логи, и он недоступен для ввода других команд: придется открывать новое окно терминала. 
 Но есть решение - ключ -d, обозначающий detach - в таком случае в stdout не будут выводиться логи, а только id запущенного контейнера и появится приглашение к вводу новой команды
 ```
-docker run -d -e POSTGRES_PASSWORD=password postgres
+docker run -d -e POSTGRES_PASSWORD=password postgres:17
 ```
 
 Но как к нему подключиться? Для подключения не из докера необходимо пробросить порт вовне с помощью ключа -p. Первым указывается порт на хосте, вторым порт внутри контейнера
 ```
-docker run -d -e POSTGRES_PASSWORD=password -p 5432:5432 postgres
+docker run -d -e POSTGRES_PASSWORD=password -p 5432:5432 postgres:17
 ```
 
 Докер контейнеры могут общаться между собой внутри сети самого докера по названиям контейнера в качестве доменного имени, а могут и через сеть хост операционной системы `host.docker.internal`
@@ -41,13 +41,13 @@ docker run -d -e POSTGRES_PASSWORD=password -p 5432:5432 postgres
 
 После остановки контейнера они остаются. Для того, чтобы контейнер удалялся, можно добавить ключ --rm
 ```
-docker run -d --rm -e POSTGRES_PASSWORD=password -p 5432:5432 postgres
+docker run -d --rm -e POSTGRES_PASSWORD=password -p 5432:5432 postgres:17
 ```
 
 
 Теперь наш контейнер удалился вместе со всеми данными. Для того, чтобы сохранять данные для переиспользования, можно добавить ключ -v и указать путь на хосте и путь внутри контейнера через двоеточие
 ```
-docker run -d --rm -e POSTGRES_PASSWORD=password -p 5432:5432 -v C:\Users\Artemiy\Documents\pg_data:/var/lib/postgresql/data postgres
+docker run -d --rm -e POSTGRES_PASSWORD=password -p 5432:5432 -v C:\Users\Artemiy\Documents\pg_data:/var/lib/postgresql/data postgres:17
 ```
 
 Также существуют docker volume - особый способ хранения данных. Данные из них доступны только из контейнеров (но можно и извлечь данные из них, через десктоп просто и удобно)
@@ -63,7 +63,7 @@ docker volume create <название>
 ```
 docker volume create pgdata
 
-docker run -d --rm -e POSTGRES_PASSWORD=password -p 5432:5432 -v pgdata:/var/lib/postgresql/data postgres
+docker run -d --rm -e POSTGRES_PASSWORD=password -p 5432:5432 -v pgdata:/var/lib/postgresql/data postgres:17
 ```
 
 
@@ -74,12 +74,12 @@ docker logs
 ```
 
 ```
-docker run -d --rm -e POSTGRES_PASSWORD=password -p 5432:5432 -v C:\Users\Artemiy\Documents\pg_data:/var/lib/postgresql/data postgres:13
+docker run -d --rm -e POSTGRES_PASSWORD=password -p 5432:5432 -v C:\Users\Artemiy\Documents\pg_data:/var/lib/postgresql/data postgres:17
 ```
 
 Для просмотра информации о содержимом образа необходимо выполнить команду 
 ```
-docker image inspect postgres
+docker image inspect postgres:17
 ```
 ```
 docker image inspect <название образа>
